@@ -1,6 +1,4 @@
-## i3gaps-dotfiles
-
-## Dotfiles
+# Dotfiles
 
 ## Description
 
