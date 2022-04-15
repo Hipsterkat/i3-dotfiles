@@ -1,0 +1,174 @@
+set $super Mod4
+set $alt Mod1
+
+########
+# font #
+########
+font pango: Noto Sans 8
+
+#######
+# bar #
+#######
+bar {
+	position top
+
+        colors {
+        background #2f343f
+        statusline #2f343f
+        separator #4b5262
+    }
+        status_command i3status
+}
+
+################
+# window rules #
+################
+new_window pixel 10
+new_float pixel 5
+
+gaps inner 20
+#smart_gaps on
+#smart_borders on
+
+###############
+# kill window #
+###############
+bindsym $super+q kill
+
+#############
+# autostart #
+#############
+exec --no-startup-id picom -b
+exec --no-startup-id nitrogen --restore
+exec --no-startup-id dunst
+
+############
+# keybinds #
+############
+bindsym $super+w exec firefox
+bindsym $super+Shift+t exec thunar
+
+########
+# term #
+########
+bindsym $super+Return exec kitty
+
+################
+# dmenu & rofi #
+################
+bindsym $super+d exec i3-dmenu-desktop --dmenu="dmenu -i -fn 'Noto Sans:size=8'"
+
+################
+# change focus #
+################
+bindsym $super+h focus left
+bindsym $super+j focus down
+bindsym $super+k focus up
+bindsym $super+l focus right
+
+###################
+# fullscreen mode #
+###################
+bindsym $super+f fullscreen toggle
+
+#############################
+# Sreen brightness controls #
+#############################
+bindsym XF86MonBrightnessUp exec --no-startup-id xbacklight -inc 5
+bindsym XF86MonBrightnessDown exec --no-startup-id xbacklight -dec 3
+
+########################
+# Pulse Audio controls #
+########################
+bindsym XF86AudioMicMute exec --no-startup-id amixer set Capture toggle  && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioMute exec --no-startup-id BLOCK_BUTTON=3 BLOCK_INSTANCE=Master ~/.config/i3/blocks/volume && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioRaiseVolume exec --no-startup-id BLOCK_BUTTON=4 BLOCK_INSTANCE=Master ~/.config/i3/blocks/volume && pkill -RTMIN+10 i3blocks
+bindsym XF86AudioLowerVolume exec --no-startup-id BLOCK_BUTTON=5 BLOCK_INSTANCE=Master ~/.config/i3/blocks/volume && pkill -RTMIN+10 i3blocks
+
+#############
+# workspace #
+#############
+set $ws1 1:workspace1
+set $ws2 2:workspace2
+set $ws3 3:workspace3
+set $ws4 4:workspace4
+set $ws5 5:workspace5
+
+#######################
+# Switch to workspace #
+#######################
+bindsym $super+1 workspace $ws1
+bindsym $super+2 workspace $ws2
+bindsym $super+3 workspace $ws3
+bindsym $super+4 workspace $ws4
+bindsym $super+5 workspace $ws5
+
+# Move focused container to workspace
+bindsym $super+Shift+1 move container to workspace $ws1
+bindsym $super+Shift+2 move container to workspace $ws2
+bindsym $super+Shift+3 move container to workspace $ws3
+bindsym $super+Shift+4 move container to workspace $ws4
+bindsym $super+Shift+5 move container to workspace $ws5
+#####################
+# restart / exit i3 #
+#####################
+bindsym $super+Shift+r restart
+bindsym $super+Shift+q exec "i3-nagbar -t warning -m 'Really, exit?' -b 'Yes' 'i3-msg exit'"
+
+###########
+# theming #
+###########
+## class                 border  backgr. text    indicator child_border 
+client.focused_inactive  #2f343f #2f343f #2f343f #2f343f   #2f343f
+client.unfocused         #2f343f #2f343f #2f343f #2f343f   #2f343f   
+client.focused           #2f343f #2f343f #2f343f #2f343f   #2f343f
+
+#################
+# resize window #
+#################
+mode "resize" { 
+        # Pressing left will shrink the window’s width.
+        # Pressing right will grow the window’s width.
+        # Pressing up will shrink the window’s height.
+        # Pressing down will grow the window’s height.
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+
+        # same bindings, but for the arrow keys
+        bindsym Left resize shrink width 10 px or 10 ppt
+        bindsym Down resize grow height 10 px or 10 ppt
+        bindsym Up resize shrink height 10 px or 10 ppt
+        bindsym Right resize grow width 10 px or 10 ppt
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $super+r mode "resize"
+
+set $mode_system system: lock(l), logout(e), suspend(s), hibernate(h), reboot(r), shutdown(Shift+s)
+mode "$mode_system" {
+    bindsym l exec --no-startup-id $locker, mode "default"
+    bindsym e exec --no-startup-id i3-msg exit, mode "default"
+    bindsym s exec --no-startup-id $locker && systemctl suspend, mode "default"
+    bindsym h exec --no-startup-id $locker && systemctl hibernate, mode "default"
+    bindsym r exec --no-startup-id systemctl reboot, mode "default"
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
+
+    # back to normal: Enter or Escape
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+
+bindsym $mod+Shift+e mode "$mode_system"
+
+#██╗██████╗░░░░░░░░██████╗░░█████╗░██████╗░░██████╗  ░█████╗░░█████╗░███╗░░██╗███████╗██╗░██████╗░
+#██║╚════██╗░░░░░░██╔════╝░██╔══██╗██╔══██╗██╔════╝  ██╔══██╗██╔══██╗████╗░██║██╔════╝██║██╔════╝░
+#██║░█████╔╝█████╗██║░░██╗░███████║██████╔╝╚█████╗░  ██║░░╚═╝██║░░██║██╔██╗██║█████╗░░██║██║░░██╗░
+#██║░╚═══██╗╚════╝██║░░╚██╗██╔══██║██╔═══╝░░╚═══██╗  ██║░░██╗██║░░██║██║╚████║██╔══╝░░██║██║░░╚██╗
+#██║██████╔╝░░░░░░╚██████╔╝██║░░██║██║░░░░░██████╔╝  ╚█████╔╝╚█████╔╝██║░╚███║██║░░░░░██║╚██████╔╝
+#╚═╝╚═════╝░░░░░░░░╚═════╝░╚═╝░░╚═╝╚═╝░░░░░╚═════╝░  ░╚════╝░░╚════╝░╚═╝░░╚══╝╚═╝░░░░░╚═╝░╚═════╝░
+
