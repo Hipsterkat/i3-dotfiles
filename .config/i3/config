@@ -23,7 +23,7 @@ font pango: Noto Sans 8
 ################
 # window rules #
 ################
-new_window pixel 10
+new_window pixel 4
 new_float pixel 5
 
 gaps inner 20
