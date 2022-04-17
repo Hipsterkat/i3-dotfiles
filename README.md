@@ -1,7 +1,8 @@
 # Dotfiles
 
 ## GTK theme
-https://github.com/mehedirm6244/My_XFCE_dotties
+https://github.com/mehedirm6244/My_XFCE_dotties/tree/main/themes/gtk-themes/memories
+https://github.com/mehedirm6244/My_XFCE_dotties/tree/main/themes/xfwm-themes/memories
 
 ## Description
 
